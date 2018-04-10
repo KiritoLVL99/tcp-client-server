@@ -8,14 +8,14 @@ Server::Server(QObject *parent) : QObject(parent)
 
     connect(mTcpServer, &QTcpServer::newConnection, this, &Server::slotNewConnection);
 
-    if(!mTcpServer->listen(QHostAddress("127.0.0.1"), 6000))
+    if(!mTcpServer->listen(QHostAddress("127.0.0.1"), 3425))
     {
         qDebug() << "server is not started";
     }
     else
     {
         qDebug() << "server is started";
-        qDebug()<<"ip: 127.0.0.1 port: 6000";
+        qDebug()<<"ip: 127.0.0.1 port: 3425";
     }
 }
 
@@ -41,6 +41,7 @@ void Server::slotNewConnection()
     mTcpSocket = mTcpServer->nextPendingConnection();
 
     mTcpSocket->write("Hello, World!!! I am echo server!\r\n");
+    qDebug()<<"this is the client";
 
     connect(mTcpSocket, &QTcpSocket::readyRead, this, &Server::slotServerRead);
     connect(mTcpSocket, &QTcpSocket::disconnected, this, &Server::slotClientDisconnected);
@@ -59,4 +60,5 @@ void Server::slotServerRead()
 void Server::slotClientDisconnected()
 {
     mTcpSocket->close();
+    qDebug()<<"good bye client";
 }
