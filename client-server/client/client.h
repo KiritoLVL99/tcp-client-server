@@ -7,20 +7,16 @@
 #include <QString>
 #include <QMessageBox>
 
-class Client /*: public QObject*/
+class Client
 {
     //Q_OBJECT
 public:
-    QTcpSocket* cli;
-    //quint16     m_nNextBlockSize;
+    QTcpSocket* socket;
 
 public:
-    explicit Client(/*QObject *parent = 0*/);
-    explicit Client(QString s, qint16 port/*, QObject *parent=0*/);
+    explicit Client();
+    explicit Client(QString IP, qint16 port);
     ~Client();
-
-public slots:
-    //void message();
 };
 
 #endif // CLIENT_H

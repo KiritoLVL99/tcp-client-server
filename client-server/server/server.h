@@ -11,7 +11,7 @@ class Server : public QObject
     Q_OBJECT
 public:
     explicit Server(QObject *parent = 0);
-    explicit Server(QString s, qint16 port, QObject *parent=0);
+    explicit Server(QString IP, qint16 port, QObject *parent=0);
 
 public slots:
     void slotNewConnection();
@@ -19,8 +19,10 @@ public slots:
     void slotClientDisconnected();
 
 private:
-    QTcpServer * mTcpServer;
-    QTcpSocket * mTcpSocket;
+    QTcpServer * server;
+    QTcpSocket * socket;
+    void AddToLog(QString text);
+    int NumberWordInText(QString &text);
 };
 
 #endif // SERVER_H

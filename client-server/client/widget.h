@@ -16,15 +16,18 @@ public:
     ~Widget();
 
 private slots:
-    void on_pbSend_clicked();  
     void on_pbConnect_clicked();
-    void on_pbDisconnect_clicked();
+    void on_pbDisconnect_clicked(); 
+    void on_pbOpenFile_clicked();
+    void on_pbSend_clicked();
+    void on_pbAnsServ_clicked();
     void message();
 
 private:
     Ui::Widget *ui;
+
     void AddToLog(QString text, QColor color = Qt::black);
-    void Init();
+    void Status(const char st);
 };
 
 #endif // WIDGET_H

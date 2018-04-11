@@ -196,6 +196,7 @@ Makefile: ../server/server.pro C:/Qt/5.10.1/mingw53_32/mkspecs/win32-g++/qmake.c
 		C:/Qt/5.10.1/mingw53_32/mkspecs/features/qt_config.prf \
 		C:/Qt/5.10.1/mingw53_32/mkspecs/win32-g++/qmake.conf \
 		C:/Qt/5.10.1/mingw53_32/mkspecs/features/spec_post.prf \
+		.qmake.stash \
 		C:/Qt/5.10.1/mingw53_32/mkspecs/features/exclusive_builds.prf \
 		C:/Qt/5.10.1/mingw53_32/mkspecs/features/toolchain.prf \
 		C:/Qt/5.10.1/mingw53_32/mkspecs/features/default_pre.prf \
@@ -210,6 +211,7 @@ Makefile: ../server/server.pro C:/Qt/5.10.1/mingw53_32/mkspecs/win32-g++/qmake.c
 		C:/Qt/5.10.1/mingw53_32/mkspecs/features/qt.prf \
 		C:/Qt/5.10.1/mingw53_32/mkspecs/features/resources.prf \
 		C:/Qt/5.10.1/mingw53_32/mkspecs/features/moc.prf \
+		C:/Qt/5.10.1/mingw53_32/mkspecs/features/win32/opengl.prf \
 		C:/Qt/5.10.1/mingw53_32/mkspecs/features/qmake_use.prf \
 		C:/Qt/5.10.1/mingw53_32/mkspecs/features/file_copies.prf \
 		C:/Qt/5.10.1/mingw53_32/mkspecs/features/testcase_targets.prf \
@@ -217,6 +219,7 @@ Makefile: ../server/server.pro C:/Qt/5.10.1/mingw53_32/mkspecs/win32-g++/qmake.c
 		C:/Qt/5.10.1/mingw53_32/mkspecs/features/yacc.prf \
 		C:/Qt/5.10.1/mingw53_32/mkspecs/features/lex.prf \
 		../server/server.pro \
+		C:/Qt/5.10.1/mingw53_32/lib/Qt5Gui.prl \
 		C:/Qt/5.10.1/mingw53_32/lib/Qt5Network.prl \
 		C:/Qt/5.10.1/mingw53_32/lib/Qt5Core.prl
 	$(QMAKE) -o Makefile ..\server\server.pro -spec win32-g++ "CONFIG+=debug" "CONFIG+=qml_debug"
@@ -355,6 +358,7 @@ C:/Qt/5.10.1/mingw53_32/mkspecs/features/qt_functions.prf:
 C:/Qt/5.10.1/mingw53_32/mkspecs/features/qt_config.prf:
 C:/Qt/5.10.1/mingw53_32/mkspecs/win32-g++/qmake.conf:
 C:/Qt/5.10.1/mingw53_32/mkspecs/features/spec_post.prf:
+.qmake.stash:
 C:/Qt/5.10.1/mingw53_32/mkspecs/features/exclusive_builds.prf:
 C:/Qt/5.10.1/mingw53_32/mkspecs/features/toolchain.prf:
 C:/Qt/5.10.1/mingw53_32/mkspecs/features/default_pre.prf:
@@ -369,6 +373,7 @@ C:/Qt/5.10.1/mingw53_32/mkspecs/features/warn_on.prf:
 C:/Qt/5.10.1/mingw53_32/mkspecs/features/qt.prf:
 C:/Qt/5.10.1/mingw53_32/mkspecs/features/resources.prf:
 C:/Qt/5.10.1/mingw53_32/mkspecs/features/moc.prf:
+C:/Qt/5.10.1/mingw53_32/mkspecs/features/win32/opengl.prf:
 C:/Qt/5.10.1/mingw53_32/mkspecs/features/qmake_use.prf:
 C:/Qt/5.10.1/mingw53_32/mkspecs/features/file_copies.prf:
 C:/Qt/5.10.1/mingw53_32/mkspecs/features/testcase_targets.prf:
@@ -376,6 +381,7 @@ C:/Qt/5.10.1/mingw53_32/mkspecs/features/exceptions.prf:
 C:/Qt/5.10.1/mingw53_32/mkspecs/features/yacc.prf:
 C:/Qt/5.10.1/mingw53_32/mkspecs/features/lex.prf:
 ../server/server.pro:
+C:/Qt/5.10.1/mingw53_32/lib/Qt5Gui.prl:
 C:/Qt/5.10.1/mingw53_32/lib/Qt5Network.prl:
 C:/Qt/5.10.1/mingw53_32/lib/Qt5Core.prl:
 qmake: FORCE

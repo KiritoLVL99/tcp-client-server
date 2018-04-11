@@ -2,15 +2,15 @@
 
 Client :: Client()
 {
-    cli = new QTcpSocket();
-    cli->connectToHost("localhost",3425);
+    socket = new QTcpSocket();
+    socket->connectToHost("localhost",3425);
 }
-Client :: Client(QString s, qint16 port)
+Client :: Client(QString IP, qint16 port)
 {
-    cli = new QTcpSocket();
-    cli->connectToHost(s,port);
+    socket = new QTcpSocket();
+    socket->connectToHost(IP,port);
 }
 Client::~Client()
 {
-    delete cli;
+    delete socket;
 }

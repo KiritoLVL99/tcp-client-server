@@ -1,64 +1,108 @@
 #include "server.h"
 #include <QDebug>
 #include <QCoreApplication>
+#include <QtGui>
+#include <QMap>
 
 Server::Server(QObject *parent) : QObject(parent)
 {
-    mTcpServer = new QTcpServer(this);
+    server = new QTcpServer(this);
 
-    connect(mTcpServer, &QTcpServer::newConnection, this, &Server::slotNewConnection);
+    connect(server, &QTcpServer::newConnection, this, &Server::slotNewConnection);
 
-    if(!mTcpServer->listen(QHostAddress("127.0.0.1"), 3425))
+    if(!server->listen(QHostAddress("127.0.0.1"), 3425))
     {
-        qDebug() << "server is not started";
+        AddToLog("server is not started");
     }
     else
     {
-        qDebug() << "server is started";
-        qDebug()<<"ip: 127.0.0.1 port: 3425";
+        AddToLog("server is started");
+        AddToLog("ip: 127.0.0.1 port: 3425");
     }
 }
 
-Server::Server(QString s, qint16 port, QObject *parent) : QObject(parent)
+Server::Server(QString IP, qint16 port, QObject *parent) : QObject(parent)
 {
-    mTcpServer = new QTcpServer(this);
+    server = new QTcpServer(this);
 
-    connect(mTcpServer, &QTcpServer::newConnection, this, &Server::slotNewConnection);
+    connect(server, &QTcpServer::newConnection, this, &Server::slotNewConnection);
 
-    if(!mTcpServer->listen(QHostAddress(s), port))
+    if(!server->listen(QHostAddress(IP), port))
     {
-        qDebug() << "server is not started";
+        AddToLog("server is not started");
     }
     else
     {
-        qDebug() << "server is started";
-        qDebug()<<"ip: "<<s<<" port: "<<port;
+        AddToLog("server is started");
+        AddToLog("ip: "+IP+" port: "+QString::number(port));
     }
 }
 
 void Server::slotNewConnection()
 {
-    mTcpSocket = mTcpServer->nextPendingConnection();
+    socket = server->nextPendingConnection();
 
-    mTcpSocket->write("Hello, World!!! I am echo server!\r\n");
-    qDebug()<<"this is the client";
+    AddToLog("ClientConnect");
 
-    connect(mTcpSocket, &QTcpSocket::readyRead, this, &Server::slotServerRead);
-    connect(mTcpSocket, &QTcpSocket::disconnected, this, &Server::slotClientDisconnected);
+    connect(socket, &QTcpSocket::readyRead, this, &Server::slotServerRead);
+    connect(socket, &QTcpSocket::disconnected, this, &Server::slotClientDisconnected);
 }
 
 void Server::slotServerRead()
 {
-    while(mTcpSocket->bytesAvailable()>0)
+    while(socket->bytesAvailable()>0)
     {
-        QByteArray array = mTcpSocket->readAll();
+        QString array=socket->readAll();
 
-        mTcpSocket->write(array);
+        AddToLog("Received a new request from the client");
+
+        QString ans = QString::number(NumberWordInText(array));
+
+        AddToLog("The response to the client request: "+ans);
+
+        QByteArray an=ans.toLatin1();
+        socket->write(an);
+
     }
 }
 
 void Server::slotClientDisconnected()
 {
-    mTcpSocket->close();
-    qDebug()<<"good bye client";
+    socket->close();
+    AddToLog("ClientDisconnect");
+}
+
+void Server::AddToLog(QString text)
+{
+    qDebug()<<QTime::currentTime().toString()<<" "<<text;
+}
+
+int Server::NumberWordInText(QString &text)
+{
+    int f= text.indexOf("!#*#!");
+    text[f]=' ';
+    f+=4;
+    text[f]=' ';
+    f++;
+    QString word="";
+    for(int i=f;i<text.size();++i)
+    {
+        word+=text[i];
+    }
+
+    QMap<QString,int> tft;
+    QString word1="";
+    for(int i=0;i<text.size();++i)
+    {
+        if(text[i]!='\n'&& text[i]!='\r' && text[i]!=' ' && text[i]!='\0')
+        {
+            word1+=text[i];
+        }
+        else
+        {
+            tft[word1]++;
+            word1="";
+        }
+    }
+    return tft[word];
 }

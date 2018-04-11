@@ -4,20 +4,13 @@
 #include <QDebug>
 #include <QMessageBox>
 #include <QtGui>
+#include <QFileDialog>
 
-bool fl=false;
-Client *cli;
+Client *client;
 
 Widget::Widget(QWidget *parent) : QWidget(parent), ui(new Ui::Widget)
 {
     ui->setupUi(this);
-    Init();
-}
-
-void Widget::Init()
-{
-    //ui->idServ->setInputMask("000.000.000.000");
-    //ui->QLEword->setValidator("a0c");
 }
 
 Widget::~Widget()
@@ -25,56 +18,76 @@ Widget::~Widget()
     delete ui;
 }
 
-void Widget::on_pbSend_clicked()
-{
-    //ui->QLEword->setInputMask("a0");
-    AddToLog(ui->QLEword->inputMask());
-    char word[2048];
-
-    QString temp=ui->QLEword->text();
-    QByteArray ba=temp.toLatin1();
-    strcpy(word,ba.data());
-
-    cli->cli->write(word);
-    AddToLog("send");
-    QString fft = cli->cli->readAll();
-    AddToLog("answer "+fft);
-    //AddToLog(fft,Qt::black);
-
-}
-
 void Widget::on_pbConnect_clicked()
 {
     QString adr = ui->idServ->text();
     quint16 port = ui->idPort->value();
-    cli = new Client(adr,port);
+    client = new Client(adr,port);
+    connect(client->socket,SIGNAL(connected()),(this),SLOT(message()));
 
-    connect(cli->cli,SIGNAL(connected()),(this),SLOT(message()));
-    //if(fl)
-    //{
-    //}
 }
 
 void Widget::on_pbDisconnect_clicked()
 {
-    cli->cli->disconnectFromHost();
-    delete cli;
+    client->socket->disconnectFromHost();
+    delete client;
 
-    AddToLog("Disconnect",Qt::red);
+    AddToLog("Disconnect",Qt::blue);
+    Status('D');
+}
 
-    ui->pbDisconnect->setEnabled(false);
-    ui->pbConnect->setEnabled(true);
-    ui->pbSend->setEnabled(false);
+void Widget::on_pbOpenFile_clicked()
+{
+    QString str = QFileDialog::getOpenFileName(0, "Open File", "", "*.txt");
+    ui->pathFile->clear();
+    ui->pathFile->insert(str);
+}
+
+void Widget::on_pbSend_clicked()
+{
+    QFile file(ui->pathFile->text());
+    if(!file.exists())
+    {
+        AddToLog("file not found",Qt::red);
+        return;
+    }
+
+    file.open(QIODevice::ReadOnly);
+    while(!file.atEnd())
+    {
+        QString str=file.readLine();
+        QByteArray bb=str.toLatin1();
+        client->socket->write(bb);
+    }
+    file.close();
+
+
+    client->socket->write("!#*#!");
+
+    char word[2048];
+    QString temp=ui->QLEword->text();
+    QByteArray ba=temp.toLatin1();
+    strcpy(word,ba.data());
+
+    client->socket->write(word);
+    AddToLog("Send request");
+    Status('S');
+}
+
+void Widget::on_pbAnsServ_clicked()
+{
+    QString ans = client->socket->readAll();
+    ui->lineAns->clear();
+    ui->lineAns->insert(ans);
+    AddToLog("Get Answer: "+ans);
+
+    Status('C');
 }
 
 void Widget::message()
 {
     AddToLog("Connect",Qt::green);
-    ui->pbSend->setEnabled(true);
-    ui->pbDisconnect->setEnabled(true);
-    ui->pbConnect->setEnabled(false);
-
-
+    Status('C');
 }
 
 void Widget::AddToLog(QString text, QColor color)
@@ -83,4 +96,32 @@ void Widget::AddToLog(QString text, QColor color)
     ui->listLog->item(0)->setTextColor(color);
 }
 
-
+void Widget::Status(const char st)
+{
+    switch (st) //D,C,S;
+    {
+    case 'D':
+        ui->pbConnect->setEnabled(true);
+        ui->pbDisconnect->setEnabled(false);
+        ui->pbOpenFile->setEnabled(false);
+        ui->pbSend->setEnabled(false);
+        ui->pbAnsServ->setEnabled(false);
+        break;
+    case 'C':
+        ui->pbConnect->setEnabled(false);
+        ui->pbDisconnect->setEnabled(true);
+        ui->pbOpenFile->setEnabled(true);
+        ui->pbSend->setEnabled(true);
+        ui->pbAnsServ->setEnabled(false);
+        break;
+    case 'S':
+        ui->pbConnect->setEnabled(false);
+        ui->pbDisconnect->setEnabled(true);
+        ui->pbOpenFile->setEnabled(false);
+        ui->pbSend->setEnabled(false);
+        ui->pbAnsServ->setEnabled(true);
+        break;
+    default:
+        break;
+    }
+}
