@@ -32,7 +32,7 @@
     <bool>false</bool>
    </property>
   </widget>
-  <widget class="QLineEdit" name="idServ">
+  <widget class="QLineEdit" name="qleIDServ">
    <property name="geometry">
     <rect>
      <x>10</x>
@@ -51,7 +51,7 @@
     <number>15</number>
    </property>
   </widget>
-  <widget class="QSpinBox" name="idPort">
+  <widget class="QSpinBox" name="sbPort">
    <property name="geometry">
     <rect>
      <x>130</x>
@@ -109,7 +109,7 @@
     </rect>
    </property>
   </widget>
-  <widget class="QLineEdit" name="QLEword">
+  <widget class="QLineEdit" name="qleWord">
    <property name="geometry">
     <rect>
      <x>220</x>

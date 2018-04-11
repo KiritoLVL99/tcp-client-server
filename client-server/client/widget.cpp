@@ -5,12 +5,14 @@
 #include <QMessageBox>
 #include <QtGui>
 #include <QFileDialog>
+#include <QValidator>
 
 Client *client;
 
 Widget::Widget(QWidget *parent) : QWidget(parent), ui(new Ui::Widget)
 {
     ui->setupUi(this);
+    ui->qleWord->setValidator(new QRegExpValidator( QRegExp( "[A-Za-z0-9]{1,50}" ) ));
 }
 
 Widget::~Widget()
@@ -20,8 +22,8 @@ Widget::~Widget()
 
 void Widget::on_pbConnect_clicked()
 {
-    QString adr = ui->idServ->text();
-    quint16 port = ui->idPort->value();
+    QString adr = ui->qleIDServ->text();
+    quint16 port = ui->sbPort->value();
     client = new Client(adr,port);
     connect(client->socket,SIGNAL(connected()),(this),SLOT(message()));
 
@@ -65,7 +67,7 @@ void Widget::on_pbSend_clicked()
     client->socket->write("!#*#!");
 
     char word[2048];
-    QString temp=ui->QLEword->text();
+    QString temp=ui->qleWord->text();
     QByteArray ba=temp.toLatin1();
     strcpy(word,ba.data());
 
@@ -106,6 +108,8 @@ void Widget::Status(const char st)
         ui->pbOpenFile->setEnabled(false);
         ui->pbSend->setEnabled(false);
         ui->pbAnsServ->setEnabled(false);
+        ui->qleIDServ->setEnabled(true);
+        ui->sbPort->setEnabled(true);
         break;
     case 'C':
         ui->pbConnect->setEnabled(false);
@@ -113,6 +117,8 @@ void Widget::Status(const char st)
         ui->pbOpenFile->setEnabled(true);
         ui->pbSend->setEnabled(true);
         ui->pbAnsServ->setEnabled(false);
+        ui->qleIDServ->setEnabled(false);
+        ui->sbPort->setEnabled(false);
         break;
     case 'S':
         ui->pbConnect->setEnabled(false);
@@ -120,6 +126,8 @@ void Widget::Status(const char st)
         ui->pbOpenFile->setEnabled(false);
         ui->pbSend->setEnabled(false);
         ui->pbAnsServ->setEnabled(true);
+        ui->qleIDServ->setEnabled(false);
+        ui->sbPort->setEnabled(false);
         break;
     default:
         break;

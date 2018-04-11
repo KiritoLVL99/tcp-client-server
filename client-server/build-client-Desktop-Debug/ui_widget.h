@@ -27,12 +27,12 @@ class Ui_Widget
 {
 public:
     QPushButton *pbSend;
-    QLineEdit *idServ;
-    QSpinBox *idPort;
+    QLineEdit *qleIDServ;
+    QSpinBox *sbPort;
     QPushButton *pbConnect;
     QPushButton *pbDisconnect;
     QListWidget *listLog;
-    QLineEdit *QLEword;
+    QLineEdit *qleWord;
     QPushButton *pbOpenFile;
     QLineEdit *pathFile;
     QLineEdit *lineAns;
@@ -53,16 +53,16 @@ public:
         pbSend->setEnabled(false);
         pbSend->setGeometry(QRect(240, 60, 75, 23));
         pbSend->setCheckable(false);
-        idServ = new QLineEdit(Widget);
-        idServ->setObjectName(QStringLiteral("idServ"));
-        idServ->setGeometry(QRect(10, 30, 101, 20));
-        idServ->setMaxLength(15);
-        idPort = new QSpinBox(Widget);
-        idPort->setObjectName(QStringLiteral("idPort"));
-        idPort->setGeometry(QRect(130, 30, 55, 20));
-        idPort->setMinimum(1);
-        idPort->setMaximum(60000);
-        idPort->setValue(3425);
+        qleIDServ = new QLineEdit(Widget);
+        qleIDServ->setObjectName(QStringLiteral("qleIDServ"));
+        qleIDServ->setGeometry(QRect(10, 30, 101, 20));
+        qleIDServ->setMaxLength(15);
+        sbPort = new QSpinBox(Widget);
+        sbPort->setObjectName(QStringLiteral("sbPort"));
+        sbPort->setGeometry(QRect(130, 30, 55, 20));
+        sbPort->setMinimum(1);
+        sbPort->setMaximum(60000);
+        sbPort->setValue(3425);
         pbConnect = new QPushButton(Widget);
         pbConnect->setObjectName(QStringLiteral("pbConnect"));
         pbConnect->setGeometry(QRect(10, 60, 75, 23));
@@ -73,10 +73,10 @@ public:
         listLog = new QListWidget(Widget);
         listLog->setObjectName(QStringLiteral("listLog"));
         listLog->setGeometry(QRect(10, 160, 461, 251));
-        QLEword = new QLineEdit(Widget);
-        QLEword->setObjectName(QStringLiteral("QLEword"));
-        QLEword->setGeometry(QRect(220, 30, 113, 20));
-        QLEword->setMaxLength(2048);
+        qleWord = new QLineEdit(Widget);
+        qleWord->setObjectName(QStringLiteral("qleWord"));
+        qleWord->setGeometry(QRect(220, 30, 113, 20));
+        qleWord->setMaxLength(2048);
         pbOpenFile = new QPushButton(Widget);
         pbOpenFile->setObjectName(QStringLiteral("pbOpenFile"));
         pbOpenFile->setEnabled(false);
@@ -123,11 +123,11 @@ public:
     {
         Widget->setWindowTitle(QApplication::translate("Widget", "Client", nullptr));
         pbSend->setText(QApplication::translate("Widget", "Send", nullptr));
-        idServ->setInputMask(QApplication::translate("Widget", "000.000.000.000", nullptr));
-        idServ->setText(QApplication::translate("Widget", "127.0.0.1", nullptr));
+        qleIDServ->setInputMask(QApplication::translate("Widget", "000.000.000.000", nullptr));
+        qleIDServ->setText(QApplication::translate("Widget", "127.0.0.1", nullptr));
         pbConnect->setText(QApplication::translate("Widget", "Connect", nullptr));
         pbDisconnect->setText(QApplication::translate("Widget", "Disconnect", nullptr));
-        QLEword->setText(QApplication::translate("Widget", "youword", nullptr));
+        qleWord->setText(QApplication::translate("Widget", "youword", nullptr));
         pbOpenFile->setText(QApplication::translate("Widget", "OpenFile", nullptr));
         label->setText(QApplication::translate("Widget", "Server IP addres", nullptr));
         label_2->setText(QApplication::translate("Widget", "Server Port", nullptr));
